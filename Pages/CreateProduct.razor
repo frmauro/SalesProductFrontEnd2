@@ -1,4 +1,8 @@
 @page "/createproduct"
+@inject HttpClient Http
+@using System.Text
+@using System.Text.Json
+@using static System.Net.Mime.MediaTypeNames
 
 <PageTitle>Create</PageTitle>
 
@@ -35,8 +39,17 @@
 @code{
     private Product product = new Product();
 
- private void HandleValidSubmit(){
+ private async void HandleValidSubmit(){
     //save the data
+    var productItemJson = new StringContent(
+        JsonSerializer.Serialize(product),
+        Encoding.UTF8,
+        Application.Json); // using static System.Net.Mime.MediaTypeNames;
+
+    using var httpResponseMessage =
+        await Http.PostAsync("http://localhost/product", productItemJson);
+
+    httpResponseMessage.EnsureSuccessStatusCode();
 } 
     
 }
