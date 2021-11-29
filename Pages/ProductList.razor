@@ -1,11 +1,56 @@
 @page "/productlist"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Product List</PageTitle>
+
+<button @onclick="Navigate">Create Product</button>
 
 <h1>Products</h1>
 
 
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Description</td>
+                    <td>@product.Amount</td>
+                    <td>@product.Price</td>
+                    <td>@product.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
 @code {
 
- private Product? product;   
+ private Product[]? products;  
+
+  protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<Product[]>("http://localhost/product");
+    } 
+
+    void Navigate(){
+        NavigationManager.NavigateTo("createproduct");
+    }
 }

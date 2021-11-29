@@ -1,0 +1,42 @@
+@page "/createproduct"
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create Product</h1>
+
+<EditForm Model="@product" OnValidSubmit="@HandleValidSubmit" >
+    <DataAnnotationsValidator /> 
+    <ValidationSummary />
+
+    <p>
+        <label for="identifier">Description: </label>
+        <InputText id="description" @bind-Value="product.Description" />
+         <ValidationMessage For="() => product.Description" /> 
+    </p>
+    <p>
+        <label for="amount">Amount: </label>
+        <InputNumber id="amount" @bind-Value="product.Amount" />
+         <ValidationMessage For="() => product.Amount" /> 
+    </p>
+    <p>
+        <label for="classification">Status: </label>
+        <InputSelect id="status" @bind-Value="product.Status">
+            <option value="">Select classification ...</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </InputSelect>
+         <ValidationMessage For="() => product.Status" /> 
+    </p>
+
+    <button type="submit">Save</button>
+</EditForm>
+
+
+@code{
+    private Product product = new Product();
+
+ private void HandleValidSubmit(){
+    //save the data
+} 
+    
+}
