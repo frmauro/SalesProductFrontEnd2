@@ -43,6 +43,14 @@
 
 
 @code{
+    public class ProductVm
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public int Amount { get; set; }
+        public decimal Price { get; set; }
+        public string Status { get; set; }
+    }
     private Product product = new Product();
 
  private async void HandleValidSubmit(){
@@ -57,13 +65,16 @@
             NumberHandling = JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowNamedFloatingPointLiterals
         };
 
-        var postBody = new { Id = "0", Description = "Product 007", Amount = "500", Price = "500", Status = "Active" };
-        var json = JsonSerializer.Serialize(product);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        // create request object
+        var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/product");
 
-    //using var httpResponse = await Http.PostAsJsonAsync("http://localhost/product", content); 
+        var postBody = new ProductVm() { Id = 0, Description = product.Description, Amount = product.Amount, Price = product.Price, Status = product.Status };
+        var json = JsonSerializer.Serialize(postBody);
+        request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-    //var data = await httpResponse.Content.ReadFromJsonAsync<Product>();
+    using var response = await Http.SendAsync(request); 
+
+    var data = await response.Content.ReadFromJsonAsync<Product>();
 
     //product = await httpResponse.Content.ReadFromJsonAsync<Product>();
 } 
