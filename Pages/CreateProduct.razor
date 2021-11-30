@@ -3,6 +3,7 @@
 @using System.Text
 @using System.Text.Json
 @using static System.Net.Mime.MediaTypeNames
+@using  System.Text.Json.Serialization
 
 <PageTitle>Create</PageTitle>
 
@@ -13,7 +14,7 @@
     <ValidationSummary />
 
     <p>
-        <label for="identifier">Description: </label>
+        <label for="description">Description: </label>
         <InputText id="description" @bind-Value="product.Description" />
          <ValidationMessage For="() => product.Description" /> 
     </p>
@@ -21,6 +22,11 @@
         <label for="amount">Amount: </label>
         <InputNumber id="amount" @bind-Value="product.Amount" />
          <ValidationMessage For="() => product.Amount" /> 
+    </p>
+    <p>
+        <label for="price">Price: </label>
+        <InputNumber id="price" @bind-Value="product.Price" />
+         <ValidationMessage For="() => product.Price" /> 
     </p>
     <p>
         <label for="classification">Status: </label>
@@ -41,15 +47,25 @@
 
  private async void HandleValidSubmit(){
     //save the data
-    var productItemJson = new StringContent(
+     @* var productItemJson = new StringContent(
         JsonSerializer.Serialize(product),
         Encoding.UTF8,
-        Application.Json); // using static System.Net.Mime.MediaTypeNames;
+        Application.Json); // using static System.Net.Mime.MediaTypeNames;  *@
 
-    using var httpResponseMessage =
-        await Http.PostAsync("http://localhost/product", productItemJson);
+        var options = new JsonSerializerOptions
+        {
+            NumberHandling = JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowNamedFloatingPointLiterals
+        };
 
-    httpResponseMessage.EnsureSuccessStatusCode();
+        var postBody = new { Id = "0", Description = "Product 007", Amount = "500", Price = "500", Status = "Active" };
+        var json = JsonSerializer.Serialize(product);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+    //using var httpResponse = await Http.PostAsJsonAsync("http://localhost/product", content); 
+
+    //var data = await httpResponse.Content.ReadFromJsonAsync<Product>();
+
+    //product = await httpResponse.Content.ReadFromJsonAsync<Product>();
 } 
     
 }
