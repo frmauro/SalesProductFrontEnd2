@@ -2,6 +2,7 @@
 @using System.Net.Http
 @inject HttpClient Http
 @using System.Net.Http.Json
+@inject NavigationManager NavigationManager
 
 <PageTitle>Edit</PageTitle>
 
@@ -54,16 +55,17 @@
 
         var requestMessage = new HttpRequestMessage()
                 {
-                    Method = new HttpMethod("POST"),
+                    Method = new HttpMethod("PUT"),
                     RequestUri = new Uri("http://localhost/product"),
                     Content =
                         JsonContent.Create(new 
-                        { id = 0, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
+                        { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
                 };
 
             var response = await Http.SendAsync(requestMessage);
             var responseStatusCode = response.StatusCode;
             responseBody = await response.Content.ReadAsStringAsync();
+            NavigationManager.NavigateTo("productlist");
 
     } 
 
