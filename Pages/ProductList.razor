@@ -34,6 +34,7 @@ else
                     <td>@product.Amount</td>
                     <td>@product.Price</td>
                     <td>@product.Status</td>
+                    <td><button @onclick="@(() => Edit(product.Id))">Editar</button></td>
                 </tr>
             }
         </tbody>
@@ -52,5 +53,9 @@ else
 
     void Navigate(){
         NavigationManager.NavigateTo("createproduct");
+    }
+
+    void Edit(int id){
+        NavigationManager.NavigateTo($"editproduct/{id}");
     }
 }
