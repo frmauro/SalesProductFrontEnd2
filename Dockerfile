@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build-env
-WORKDIR /
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /app 
 
-COPY / .
+COPY . ./
 RUN dotnet restore "WebProduct.csproj"
 RUN dotnet build "WebProduct.csproj" -c Release -o /build
 
@@ -12,4 +12,4 @@ FROM nginx:alpine AS final
 WORKDIR /usr/share/nginx/html
 
 COPY --from=publish /publish/wwwroot /usr/local/webapp/nginx/html
-COPY web/TooBigToFailBurgerShopWebSPA/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
