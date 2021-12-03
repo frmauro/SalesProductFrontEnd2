@@ -48,7 +48,7 @@ else
 
   protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<Product[]>("http://localhost/product");
+        products = await Http.GetFromJsonAsync<Product[]>("http://192.168.49.1/product");
     } 
 
     void Navigate(){

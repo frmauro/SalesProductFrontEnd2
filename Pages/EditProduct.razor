@@ -48,7 +48,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        product = await Http.GetFromJsonAsync<Product>($"http://localhost/product/{id}");
+        product = await Http.GetFromJsonAsync<Product>($"http://192.168.49.1/product/{id}");
     }
 
      private async void HandleValidSubmit(){
@@ -56,7 +56,7 @@
         var requestMessage = new HttpRequestMessage()
                 {
                     Method = new HttpMethod("PUT"),
-                    RequestUri = new Uri("http://localhost/product"),
+                    RequestUri = new Uri("http://192.168.49.1/product"),
                     Content =
                         JsonContent.Create(new 
                         { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
