@@ -1,5 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build-env
-WORKDIR /WebProduct
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build-env
+WORKDIR /
 
 COPY / .
 RUN dotnet restore "WebProduct.csproj"
