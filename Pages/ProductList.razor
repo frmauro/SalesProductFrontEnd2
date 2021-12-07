@@ -44,11 +44,15 @@ else
 
 @code {
 
+
+    private string urlapiToKube = "http://localhost";
+    private string urlapiToDocker = "http://192.168.49.1";
+
  private Product[]? products;  
 
   protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<Product[]>("http://192.168.49.1/product");
+        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKube}/product");
     } 
 
     void Navigate(){
