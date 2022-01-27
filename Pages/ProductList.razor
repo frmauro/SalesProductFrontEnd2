@@ -16,17 +16,17 @@
 else
 {
     <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Price</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in products)
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in products)
             {
                 <tr>
                     <td>@product.Id</td>
@@ -48,18 +48,24 @@ else
     private string urlapiToKube = "http://localhost";
     private string urlapiToDocker = "http://192.168.49.1";
 
- private Product[]? products;  
+    private string urlapiToLocalhost = "http://localhost:5158";
 
-  protected override async Task OnInitializedAsync()
+    private Product[]? products;
+
+    protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKube}/product");
-    } 
+        //products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKube}/product");
+        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToLocalhost}/getAllProduct");
 
-    void Navigate(){
+    }
+
+    void Navigate()
+    {
         NavigationManager.NavigateTo("createproduct");
     }
 
-    void Edit(int id){
+    void Edit(int id)
+    {
         NavigationManager.NavigateTo($"editproduct/{id}");
     }
 }

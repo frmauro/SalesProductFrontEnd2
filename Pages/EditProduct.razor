@@ -45,6 +45,7 @@
 
     private string urlapiToKube = "http://localhost";
     private string urlapiToDocker = "http://192.168.49.1";
+    private string urlapiToLocalhost = "http://localhost:5158";
 
     private Product? product = new Product();
      [Parameter] public int id { get; set; }
@@ -52,19 +53,33 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        product = await Http.GetFromJsonAsync<Product>($"{urlapiToKube}/product/{id}");
+        //product = await Http.GetFromJsonAsync<Product>($"{urlapiToKube}/product/{id}");
+        product = await Http.GetFromJsonAsync<Product>($"{urlapiToLocalhost}/GetProductById/{id}");
     }
 
      private async void HandleValidSubmit(){
 
-        var requestMessage = new HttpRequestMessage()
+        @* var requestMessage = new HttpRequestMessage()
                 {
                     Method = new HttpMethod("PUT"),
                     RequestUri = new Uri($"{urlapiToKube}/product"),
                     Content =
                         JsonContent.Create(new 
                         { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
+                }; *@
+
+
+
+        var requestMessage = new HttpRequestMessage()
+                {
+                    Method = new HttpMethod("PUT"),
+                    RequestUri = new Uri($"{urlapiToLocalhost}/UpdateProduct"),
+                    Content =
+                        JsonContent.Create(new 
+                        { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
                 };
+
+
 
             var response = await Http.SendAsync(requestMessage);
             var responseStatusCode = response.StatusCode;
