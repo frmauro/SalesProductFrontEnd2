@@ -44,7 +44,7 @@ else
 
 @code {
 
-
+    private string urlapiToKubeToapigetway = "http://salesorder.com";
     private string urlapiToKube = "http://localhost";
     private string urlapiToDocker = "http://192.168.49.1";
 
@@ -55,7 +55,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         //products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKube}/product");
-        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToLocalhost}/getAllProduct");
+        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKubeToapigetway}/GetAllProduct");
 
     }
 

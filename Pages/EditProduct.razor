@@ -9,24 +9,24 @@
 <h1>Edit Product</h1>
 
 
-<EditForm Model="@product" OnValidSubmit="@HandleValidSubmit" >
-    <DataAnnotationsValidator /> 
+<EditForm Model="@product" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
     <ValidationSummary />
 
     <p>
         <label for="description">Description: </label>
         <InputText id="description" @bind-Value="product.Description" />
-         <ValidationMessage For="() => product.Description" /> 
+        <ValidationMessage For="() => product.Description" />
     </p>
     <p>
         <label for="amount">Amount: </label>
         <InputNumber id="amount" @bind-Value="product.Amount" />
-         <ValidationMessage For="() => product.Amount" /> 
+        <ValidationMessage For="() => product.Amount" />
     </p>
     <p>
         <label for="price">Price: </label>
         <InputNumber id="price" @bind-Value="product.Price" />
-         <ValidationMessage For="() => product.Price" /> 
+        <ValidationMessage For="() => product.Price" />
     </p>
     <p>
         <label for="classification">Status: </label>
@@ -35,57 +35,67 @@
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
         </InputSelect>
-         <ValidationMessage For="() => product.Status" /> 
+        <ValidationMessage For="() => product.Status" />
     </p>
 
     <button type="submit">Save</button>
 </EditForm>
 
-@code{
+@code {
 
+    private string urlapiToKubeToapigetway = "http://salesorder.com";
     private string urlapiToKube = "http://localhost";
     private string urlapiToDocker = "http://192.168.49.1";
     private string urlapiToLocalhost = "http://localhost:5158";
 
     private Product? product = new Product();
-     [Parameter] public int id { get; set; }
+    [Parameter] public int id { get; set; }
     private string? responseBody;
 
     protected async override Task OnParametersSetAsync()
     {
         //product = await Http.GetFromJsonAsync<Product>($"{urlapiToKube}/product/{id}");
-        product = await Http.GetFromJsonAsync<Product>($"{urlapiToLocalhost}/GetProductById/{id}");
+        product = await Http.GetFromJsonAsync<Product>($"{urlapiToKubeToapigetway}/GetProductById/{id}");
     }
 
-     private async void HandleValidSubmit(){
+    private async void HandleValidSubmit()
+    {
 
         @* var requestMessage = new HttpRequestMessage()
-                {
-                    Method = new HttpMethod("PUT"),
-                    RequestUri = new Uri($"{urlapiToKube}/product"),
-                    Content =
-                        JsonContent.Create(new 
-                        { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
-                }; *@
+            {
+            Method = new HttpMethod("PUT"),
+            RequestUri = new Uri($"{urlapiToKube}/product"),
+            Content =
+            JsonContent.Create(new
+            { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status
+            = product.Status })
+            }; *@
 
 
 
         var requestMessage = new HttpRequestMessage()
+        {
+            Method = new HttpMethod("PUT"),
+            RequestUri = new Uri($"{urlapiToKubeToapigetway}/UpdateProduct"),
+            Content =
+                JsonContent.Create(new
                 {
-                    Method = new HttpMethod("PUT"),
-                    RequestUri = new Uri($"{urlapiToLocalhost}/UpdateProduct"),
-                    Content =
-                        JsonContent.Create(new 
-                        { id = product.Id, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })
-                };
+                    id = product.Id,
+                    description = product.Description,
+                    amount = product.Amount,
+                    price = product.Price.ToString(),
+                    status
+                = product.Status
+                })
+        };
 
 
 
-            var response = await Http.SendAsync(requestMessage);
-            var responseStatusCode = response.StatusCode;
-            responseBody = await response.Content.ReadAsStringAsync();
-            NavigationManager.NavigateTo("productlist");
+        var response = await Http.SendAsync(requestMessage);
+        var responseStatusCode = response.StatusCode;
+        responseBody = await response.Content.ReadAsStringAsync();
+        NavigationManager.NavigateTo("productlist");
 
-    } 
+    }
 
 }
