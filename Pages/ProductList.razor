@@ -50,12 +50,14 @@ else
 
     private string urlapiToLocalhost = "http://localhost:5158";
 
+    private string urlapiAzureDevapigetway = "http://localhost:5000";
+
     private Product[]? products;
 
     protected override async Task OnInitializedAsync()
     {
         //products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKube}/product");
-        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKubeToapigetway}/GetAllProduct");
+        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiAzureDevapigetway}/GetAllProduct");
 
     }
 

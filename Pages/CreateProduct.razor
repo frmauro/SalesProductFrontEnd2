@@ -47,6 +47,7 @@
     private string urlapiToKube = "http://localhost";
     private string urlapiToDocker = "http://192.168.49.1";
     private string urlapiToLocalhost = "http://localhost:5158";
+    private string urlapiAzureDevapigetway = "http://localhost:5000";
     public class ProductVm
     {
         public int Id { get; set; }
@@ -72,7 +73,7 @@
         var requestMessage = new HttpRequestMessage()
                 {
                     Method = new HttpMethod("POST"),
-                    RequestUri = new Uri($"{urlapiToKubeToapigetway}/CreateProduct"),
+                    RequestUri = new Uri($"{urlapiAzureDevapigetway}/CreateProduct"),
                     Content =
                         JsonContent.Create(new 
                         { id = 0, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })

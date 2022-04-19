@@ -47,6 +47,7 @@
     private string urlapiToKube = "http://localhost";
     private string urlapiToDocker = "http://192.168.49.1";
     private string urlapiToLocalhost = "http://localhost:5158";
+    private string urlapiAzureDevapigetway = "http://localhost:5000";
 
     private Product? product = new Product();
     [Parameter] public int id { get; set; }
@@ -55,7 +56,7 @@
     protected async override Task OnParametersSetAsync()
     {
         //product = await Http.GetFromJsonAsync<Product>($"{urlapiToKube}/product/{id}");
-        product = await Http.GetFromJsonAsync<Product>($"{urlapiToKubeToapigetway}/GetProductById/{id}");
+        product = await Http.GetFromJsonAsync<Product>($"{urlapiAzureDevapigetway}/GetProductById/{id}");
     }
 
     private async void HandleValidSubmit()
@@ -76,7 +77,7 @@
         var requestMessage = new HttpRequestMessage()
         {
             Method = new HttpMethod("PUT"),
-            RequestUri = new Uri($"{urlapiToKubeToapigetway}/UpdateProduct"),
+            RequestUri = new Uri($"{urlapiAzureDevapigetway}/UpdateProduct"),
             Content =
                 JsonContent.Create(new
                 {
