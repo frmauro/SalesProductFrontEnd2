@@ -33,6 +33,6 @@ docker build -t webproduct .
 echo "built docker images and proceeding to delete existing container"
 echo "Deploying the updated container"
 
-docker run -d -p 8081:80 --link salesproductapi webproduct
+docker run --name webproduct -d -p 8081:80 --link salesproductapi webproduct
 
 echo "Deploying the container"
