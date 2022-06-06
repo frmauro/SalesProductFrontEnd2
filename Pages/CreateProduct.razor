@@ -3,6 +3,8 @@
 @inject HttpClient Http
 @using System.Net.Http.Json
 @inject NavigationManager NavigationManager
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 <PageTitle>Create</PageTitle>
 
@@ -43,11 +45,12 @@
 
 @code{
 
-    private string urlapiToKubeToapigetway = "http://salesorder.com";
-    private string urlapiToKube = "http://localhost";
-    private string urlapiToDocker = "http://192.168.49.1";
-    private string urlapiToLocalhost = "http://localhost:5158";
-    private string urlapiAzureDevapigetway = "http://localhost:5000";
+    private string urlapi = String.Empty;//"http://localhost:5000";
+    protected override void OnInitialized()
+    {
+        this.urlapi = Configuration.GetSection("urlapi").Value;
+    }
+
     public class ProductVm
     {
         public int Id { get; set; }
@@ -73,7 +76,7 @@
         var requestMessage = new HttpRequestMessage()
                 {
                     Method = new HttpMethod("POST"),
-                    RequestUri = new Uri($"{urlapiAzureDevapigetway}/CreateProduct"),
+                    RequestUri = new Uri($"{urlapi}/CreateProduct"),
                     Content =
                         JsonContent.Create(new 
                         { id = 0, description = product.Description, amount = product.Amount, price = product.Price.ToString(), status = product.Status })

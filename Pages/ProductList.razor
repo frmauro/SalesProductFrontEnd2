@@ -1,6 +1,8 @@
 @page "/productlist"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 <PageTitle>Product List</PageTitle>
 
@@ -44,21 +46,17 @@ else
 
 @code {
 
-    private string urlapiToKubeToapigetway = "http://salesorder.com";
-    private string urlapiToKube = "http://localhost";
-    private string urlapiToDocker = "http://192.168.49.1";
-
-    private string urlapiToLocalhost = "http://localhost:5158";
-
-    private string urlapiAzureDevapigetway = "http://localhost:5000";
+    private string urlapi = string.Empty;//"http://localhost:5000";
+    protected override void OnInitialized()
+    {
+        this.urlapi = Configuration.GetSection("urlapi").Value;
+    }
 
     private Product[]? products;
 
     protected override async Task OnInitializedAsync()
     {
-        //products = await Http.GetFromJsonAsync<Product[]>($"{urlapiToKube}/product");
-        products = await Http.GetFromJsonAsync<Product[]>($"{urlapiAzureDevapigetway}/GetAllProduct");
-
+        products = await Http.GetFromJsonAsync<Product[]>($"{urlapi}/GetAllProduct");
     }
 
     void Navigate()
